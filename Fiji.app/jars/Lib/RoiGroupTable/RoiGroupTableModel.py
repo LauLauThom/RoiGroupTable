@@ -1,7 +1,11 @@
 '''
 This custom table model is designed to support the data as columns
+The datamodel is done via OrderedDict to be able to sort easily by group numbers
 With 2 columns: 1 for group numbers, the second for group names
+This is NOT WORKING see method setValue getting super complicated
+Maybe easier to rely on table doing the sorting
 '''
+from collections import OrderedDict
 from javax.swing.table import AbstractTableModel
 from ij.gui   import Roi
 
@@ -12,24 +16,30 @@ class TableModel(AbstractTableModel):
         super(TableModel, self).__init__()
         groupNames  = Roi.getGroupNames().split(",") # groupNames is a list then
         self.headers = ["Group", "Name"]
-        self.columns = [[],[]] # 2 columns
-        self.columns[0] = range(1, len(groupNames)+1)
-        self.columns[1] = groupNames
+        self.data = OrderedDict( { index+1:groupName for (index, groupName) in enumerate(groupNames) } )
 
     def getColumnClass(self, index):
         return int if index==0 else str
     
     def getRowCount(self):
-        return len(self.columns[0])
+        return len(self.data)
 
     def getColumnCount(self):
         return 2
 
     def getValueAt(self, row, column):
-        return self.columns[column][row]
+        if column == 0:
+        	return self.data.keys()[row]
+        
+        elif column == 1:	
+        	return self.data.values()[row]
     
     def getColumn(self, column):
-        return self.columns[column]
+        if column == 0:
+        	return self.data.keys()
+        
+        elif column == 1:	
+        	return self.data.values()
     
     def getColumnName(self, column):
         return self.headers[column]
@@ -38,12 +48,35 @@ class TableModel(AbstractTableModel):
         return True  # does not work for integer column
 
     def setValueAt(self, value, row, column):
-        self.columns[column][row] = value
+        """
+        THIS WONT WORK for column==0
+        There is now way to rename a dictionary key while keeping the order !!!
+        To rename a key is to remove the entry and add a new entry with the same key but different value
+        since OrderedDict does not support insertion at arbitrary index, we cannot update a key while keeping the key order
+        The solution would to store the keys in a list which give the order of the keys and a dict for the mappings, but this is getting too complicated
+        """
+        if column == 0: # renaming a key: meaning we remove the previous entry and add a new one with the same previous value
+        	
+        	# Get previous dicoKey and dicoValue, and remove the dico entry
+        	oldKey    = self.data.keys()[row]
+        	dicoValue = self.data[oldKey]
+        	del(self.data[oldKey])
+
+        	# Add new dico entry
+        	self.data[value] = dicoValue
+        	
+		elif column == 1:
+			# rename value (ie group), meaning we first recover the associated dico key from the row position and then update the value 
+			key = self.data.keys()[row]
+			self.data[key] = value
+        
         self.fireTableCellUpdated(row, column)
     
     def addRow(self, group, name):
         self.columns[0].append(group)
         self.columns[1].append(name)
+		
+        
         n = len(self.columns[0])
         self.fireTableRowsInserted(n-1, n-1)
     
