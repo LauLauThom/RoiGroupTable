@@ -30,15 +30,16 @@ class AddButton(JButton, ActionListener):
 # Class defining action of button : Adding a row to table 
 class DeleteButton(JButton, ActionListener): 
 	 
-	def __init__(self, groupTable):  
-		super(DeleteButton, self).__init__("Delete selected row")
+	def __init__(self, groupTable):	 
+		super(DeleteButton, self).__init__("Delete last row")
 		self.addActionListener(self) 
 		self.groupTable = groupTable
-				  
+	
 	def actionPerformed(self, event): 
-		row = self.groupTable.table.getSelectedRow()
-		if row!=-1: 
-			self.groupTable.tableModel.deleteRow(row) 
+		"""Delete the last row"""
+		tableModel = self.groupTable.tableModel
+		nRows = tableModel.getRowCount()
+		if nRows>0: tableModel.deleteRow(nRows-1)
  
  
  
