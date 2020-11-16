@@ -1,13 +1,13 @@
 from javax.swing import JButton, JTable, JScrollPane, JPanel, JLabel, SpinnerNumberModel, JSpinner, JTextField
 from java.awt import GridLayout, Panel, Dimension
 from java.awt.event import ActionEvent, ActionListener
-from ij.gui import GenericDialog
+from ij.gui import GenericDialog, Roi
 from RoiGroupTable import RoiGroupTableModel
  
 
 # Class defining action of button : Adding a row to table 
 class AddButton(JButton, ActionListener): 
- 
+
 	def __init__(self, groupTable): 
 		super(AddButton, self).__init__("Add row")
 		self.addActionListener(self) 
@@ -92,7 +92,7 @@ class RoiGroupTable(Panel):
 		 
 		 
 		# Add text field for group name 
-		self.groupField = JTextField("group") 
+		self.groupField = JTextField("new group") 
 		buttonPanel.add(self.groupField) 
 		
 		
@@ -118,13 +118,12 @@ class RoiGroupTable(Panel):
 		gd.addPanel(self) # Add current table instance to panel 
 		gd.showDialog() 
 		 
-		if gd.wasOKed():
-			pass
-			columnGroups = self.tableModel.getColumn(0) 
-			columnNames  = self.tableModel.getColumn(1)  
-			
-			nRows = self.tableModel.getRowCount()  
-	 
+		if gd.wasOKed(): 
+			# Update ImageJ Roi group names mapping
+			stringGroup = ','.join( self.tableModel.getColumn(1) ) 
+			Roi.setGroupNames(stringGroup) 
+	
+	
 	
 	def getTableModel(self): 
 		return self.tableModel
