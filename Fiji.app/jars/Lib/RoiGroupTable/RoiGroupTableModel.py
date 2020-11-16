@@ -10,8 +10,9 @@ class TableModel(AbstractTableModel):
     
     def __init__(self):
         super(TableModel, self).__init__()
-        groupNames  = Roi.getGroupNames().split(",") # groupNames is a list then
         self.headers = ["Group", "Name"]
+        groupNames  = Roi.getGroupNames().split(",") # groupNames is a list then
+        self.nRows   = len(groupNames)
         self.columns = [[],[]] # 2 columns
         self.columns[0] = range(1, len(groupNames)+1)
         self.columns[1] = groupNames
@@ -20,7 +21,7 @@ class TableModel(AbstractTableModel):
         return int if index==0 else str
     
     def getRowCount(self):
-        return len(self.columns[0])
+        return self.nRows
 
     def getColumnCount(self):
         return 2
@@ -38,19 +39,23 @@ class TableModel(AbstractTableModel):
         return True if col==1 else False
 
     def setValueAt(self, value, row, column):
+        """Set value with 0-based row and column indexes"""
         self.columns[column][row] = value
         self.fireTableCellUpdated(row, column)
     
-    def addRow(self, group, name):
-        self.columns[0].append(group)
+    def addRow(self, index, name):
+        """Add row with 1-based index"""
+        self.columns[0].append(index)
         self.columns[1].append(name)
-        n = len(self.columns[0])
-        self.fireTableRowsInserted(n-1, n-1)
+        self.nRows+=1 # increment row number        
+        self.fireTableRowsInserted(self.nRows-1, self.nRows-1) # except here 0-based index
     
     def deleteRow(self, row): 
+        """Delete row with 0-based index"""
         del(self.columns[0][row])
         del(self.columns[1][row])
         self.fireTableRowsDeleted(row, row)
+        self.nRows -= 1 # decrement row number
     
     def deleteRows(self, first, last):
         for i in range(first, last+1):
@@ -58,6 +63,7 @@ class TableModel(AbstractTableModel):
             del(self.columns[1][row])
         
         self.fireTableRowsDeleted(first, last)
+        self.nRows -= last-first+1
 
 if __name__ in ['__builtin__', '__main__']:
     '''
