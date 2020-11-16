@@ -9,30 +9,22 @@ from RoiGroupTable import RoiGroupTableModel
 class AddButton(JButton, ActionListener): 
  
 	def __init__(self, groupTable): 
-		super(AddButton, self).__init__("Add/Update row")
+		super(AddButton, self).__init__("Add row")
 		self.addActionListener(self) 
-		self.groupTable = groupTable	  
+		self.groupTable = groupTable
 
 
 	def actionPerformed(self, event): 
 		
-		# Get group number and name
-		number	= self.groupTable.getGroupValue()
-		groupName = self.groupTable.getNameField() 
-		 
-		# Check if group number already in table 
-		tableModel = self.groupTable.tableModel
-		numbers = tableModel.getColumn(0) 
+		# Get group name 
+		groupName = self.groupTable.getNameField()  
+		  
+		# Check if group number already in table  
+		tableModel = self.groupTable.tableModel 
 		
-		try:
-			#search for the item
-			rowIndex = numbers.index(number) # raise ValueError if number not in existing numbers
-			columnIndex = 1
-			tableModel.setValueAt(groupName, rowIndex, columnIndex)
+		n = tableModel.getRowCount()
+		tableModel.addRow(n+1, groupName)
 		
-		except ValueError:
-			tableModel.addRow(number, groupName) 
-			
  
 
 # Class defining action of button : Adding a row to table 
