@@ -35,7 +35,7 @@ class TableModel(AbstractTableModel):
         return self.headers[column]
     
     def isCellEditable(self, row, col):
-        return True  # does not work for integer column
+        return True if col==1 else False
 
     def setValueAt(self, value, row, column):
         self.columns[column][row] = value
