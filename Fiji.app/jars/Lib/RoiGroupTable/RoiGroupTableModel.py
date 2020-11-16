@@ -1,80 +1,85 @@
 '''
-Test using list instead of vectors
+This custom table model is designed to support the data as columns
+With 2 columns: 1 for group numbers, the second for group names
 '''
-import java.util.*
-import javax.swing.*
-from javax.swing import JTable
 from javax.swing.table import AbstractTableModel
-from java.awt import Panel
-from ij.gui   import Roi, GenericDialog
+from ij.gui   import Roi
 
 
 class RoiGroupTableModel(AbstractTableModel):
-	
-	headers = ["Group number", "Name"]
-	columns = Vector(2) # 2 columns
-	
-	def __init__(self):
-		super(RoiGroupTableModel, self).__init__()
-		groupNames  = Roi.getGroupNames().split(",") # groupNames is a list then
-		self.dicoGroup = { item[0], item[1] for item in enumerate(groupNames)] 
-		#self.groupNames = new TreeMap<Integer, String>(groupNames) # sort the map by keys to makes sure keySet and values are ordered the same
-		
-		# Populate the column vectors
-		size = len(self.groupNames)
-		columnGroups = Vector(size) # contain group numbers
-		columnNames  = Vector(size) # contains group names
-		
-		for entry in self.groupNames.entrySet():
-			columnGroups.add(entry.getKey().intValue())
-			columnNames.add(entry.getValue())
-		
-		# Populate the 2D-data vector containing the 2 column vector
-		self.columns.add(columnGroups)
-		self.columns.add(columnNames)
-		
-	
-	def getColumnClass(self, index):
-		return int.class if index==0 else String.class
-	
-	def getRowCount(self):
-        return self.columns.get(0).size()
+    
+    def __init__(self):
+        super(RoiGroupTableModel, self).__init__()
+        groupNames  = Roi.getGroupNames().split(",") # groupNames is a list then
+        self.headers = ["Group", "Name"]
+        self.columns = [[],[]] # 2 columns
+        self.columns[0] = range(1, len(groupNames)+1)
+        self.columns[1] = groupNames
 
-	def getColumnCount(self):
+    def getColumnClass(self, index):
+        return int if index==0 else str
+    
+    def getRowCount(self):
+        return len(self.columns[0])
+
+    def getColumnCount(self):
         return 2
 
-	def getValueAt(self, row, column):
-		return self.columns.get(column).get(row)
-	
+    def getValueAt(self, row, column):
+        return self.columns[column][row]
     
-	def getColumn(self, column):
-		return self.columns.get(column)
-	
-	
-	def getColumnName(self, column):
-        return RoiGroupTableModel.headers[column]
+    def getColumn(self, column):
+        return self.columns[column]
     
-	def isCellEditable(self, row, col):
+    def getColumnName(self, column):
+        return self.headers[column]
+    
+    def isCellEditable(self, row, col):
         return True  # does not work for integer column
 
     def setValueAt(self, value, row, column):
-    	self.columns.get(column).set(row, value)
-		fireTableCellUpdated(row, column)
-    
+        self.columns[column][row] = value
+        self.fireTableCellUpdated(row, column)
     
     def addRow(self, group, name):
-    	self.columns.get(0).add(group)
-    	self.columns.get(1).add(name)
-    	n = self.getRowCount()
-    	fireTableRowsInserted(n-1, n-1)
-    
+        self.columns[0].append(group)
+        self.columns[1].append(name)
+        n = len(self.columns[0])
+        self.fireTableRowsInserted(n-1, n-1)
     
     def deleteRow(self, row): 
-    	self.columns.get(0).removeElementAt(row)
-    	self.columns.get(1).removeElementAt(row)
-    	fireTableRowsDeleted(row, row)
-    
+        del(self.columns[0][row])
+        del(self.columns[1][row])
+        self.fireTableRowsDeleted(row, row)
     
     def deleteRows(self, first, last):
-    	pass
-    	#self.columns.get(0).removeRange(first, last) #removeRange is protected ><
+        for i in range(first, last+1):
+            del(self.columns[0][row])
+            del(self.columns[1][row])
+        
+        self.fireTableRowsDeleted(first, last)
+
+if __name__ in ['__builtin__', '__main__']:
+    '''
+    Test the table model by generating a simple window with just the table
+    1) Initialized a JTable with the RoiGroupTableModel
+    2) Put the JTable in a JScrollPane
+    3) Put the JScrollPane in a Panel
+    4) Put the Panel in a Generic Dialog
+    5) Display the GenericDialog
+    '''
+    
+    from javax.swing import JTable, JScrollPane
+    from ij.gui import GenericDialog
+    from java.awt import Panel
+    
+    tableModel = RoiGroupTableModel()
+    table = JTable(tableModel)
+    tablePane = JScrollPane(table)
+    table.setFillsViewportHeight(True)
+
+    gd = GenericDialog("Roi-group table")
+    panel = Panel()
+    panel.add(tablePane)
+    gd.addPanel(panel) # Add current table instance to panel
+    gd.showDialog()
