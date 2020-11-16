@@ -6,10 +6,10 @@ from javax.swing.table import AbstractTableModel
 from ij.gui   import Roi
 
 
-class RoiGroupTableModel(AbstractTableModel):
+class TableModel(AbstractTableModel):
     
     def __init__(self):
-        super(RoiGroupTableModel, self).__init__()
+        super(TableModel, self).__init__()
         groupNames  = Roi.getGroupNames().split(",") # groupNames is a list then
         self.headers = ["Group", "Name"]
         self.columns = [[],[]] # 2 columns
@@ -68,12 +68,11 @@ if __name__ in ['__builtin__', '__main__']:
     4) Put the Panel in a Generic Dialog
     5) Display the GenericDialog
     '''
-    
     from javax.swing import JTable, JScrollPane
     from ij.gui import GenericDialog
     from java.awt import Panel
     
-    tableModel = RoiGroupTableModel()
+    tableModel = TableModel()
     table = JTable(tableModel)
     tablePane = JScrollPane(table)
     table.setFillsViewportHeight(True)
