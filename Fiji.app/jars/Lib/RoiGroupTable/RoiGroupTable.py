@@ -43,7 +43,7 @@ class DeleteButton(JButton, ActionListener):
  
  
  
-class RoiGroupTable(Panel): 
+class Table(Panel): 
 	"""
 	Implement a table with 2 columns: Roi group number and associated name. 
 	The table exposes the 
@@ -53,7 +53,7 @@ class RoiGroupTable(Panel):
 	 
 	def __init__(self): 
 		 
-		super(RoiGroupTable, self).__init__(GridLayout(0,1)) # 1 column, as many rows as necessary
+		super(Table, self).__init__(GridLayout(0,1)) # 1 column, as many rows as necessary
 		 
 		self.tableModel = RoiGroupTableModel.TableModel()  
 		self.table = JTable(self.tableModel) 
@@ -133,6 +133,6 @@ if __name__ in ['__builtin__', '__main__']:
 	"""
 	Initialize a RoiGroupTable and show it.
 	"""
-	table = RoiGroupTable()
+	table = Table()
 	
 	table.showTable()
