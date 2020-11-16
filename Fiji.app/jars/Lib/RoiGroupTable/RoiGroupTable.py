@@ -76,15 +76,13 @@ class RoiGroupTable(Panel):
 		 
 		 
 		# LABEL PANEL 
-		labelPanel = JPanel( GridLayout(0,2)) 
+		labelPanel = JPanel( GridLayout(0,2) )
 		#Panel labelPanel =  Panel( GridLayout(0,2)) 
 		#Panel labelPanel =  Panel() # looks bad when resizing 
 		 
 		# Add label  
-		label1 = JLabel("Group number") 
-		label2 = JLabel("Name") 
-		labelPanel.add(label1) 
-		labelPanel.add(label2) 
+		labelName = JLabel("Name") 
+		labelPanel.add(labelName) 
 		self.add(labelPanel) 
 		 
 		 
@@ -92,11 +90,6 @@ class RoiGroupTable(Panel):
 		buttonPanel = JPanel( GridLayout(0,3) ) 
 		#Panel buttonPanel =  Panel() 
 		 
-		# Add spinner for group number
-		default, minVal, maxVal, step = 1,1,255,1
-		self.spinnerModel = SpinnerNumberModel(default, minVal, maxVal, step) 
-		spinner = JSpinner(self.spinnerModel)
-		buttonPanel.add(spinner) 
 		 
 		# Add text field for group name 
 		self.groupField = JTextField("group") 
@@ -111,11 +104,6 @@ class RoiGroupTable(Panel):
 		# Add button panel to main panel 
 		self.add(buttonPanel) 
 
-	
-	def getGroupValue(self):
-		"""Get the current value of the group number field"""
-		return self.spinnerModel.getNumber()
-		
 
 	def getNameField(self):
 		"""Read the current state of the group name"""
