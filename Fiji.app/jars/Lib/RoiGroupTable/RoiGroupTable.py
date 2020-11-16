@@ -2,7 +2,7 @@ from javax.swing import JButton, JTable, JScrollPane, JPanel, JLabel, SpinnerNum
 from java.awt import GridLayout, Panel, Dimension
 from java.awt.event import ActionEvent, ActionListener
 from ij.gui import GenericDialog, Roi
-from RoiGroupTable import RoiGroupTableModel
+from RoiGroupTableModel import TableModel
  
 
 # Class defining action of button : Adding a row to table 
@@ -55,7 +55,7 @@ class Table(Panel):
 		 
 		super(Table, self).__init__(GridLayout(0,1)) # 1 column, as many rows as necessary
 		 
-		self.tableModel = RoiGroupTableModel.TableModel()  
+		self.tableModel = TableModel()
 		self.table = JTable(self.tableModel) 
 		self.table.setPreferredScrollableViewportSize( Dimension(500, 70) ) 
 		self.table.setFillsViewportHeight(True) 
