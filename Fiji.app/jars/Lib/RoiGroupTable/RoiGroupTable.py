@@ -76,7 +76,7 @@ class RoiGroupTable(Panel):
 		 
 		 
 		# LABEL PANEL 
-		labelPanel = JPanel( GridLayout(0,2) )
+		labelPanel = JPanel( GridLayout(0,1) )
 		#Panel labelPanel =  Panel( GridLayout(0,2)) 
 		#Panel labelPanel =  Panel() # looks bad when resizing 
 		 
@@ -87,7 +87,7 @@ class RoiGroupTable(Panel):
 		 
 		 
 		# BUTTON PANNEL 
-		buttonPanel = JPanel( GridLayout(0,3) ) 
+		buttonPanel = JPanel( GridLayout(0,2) ) 
 		#Panel buttonPanel =  Panel() 
 		 
 		 
