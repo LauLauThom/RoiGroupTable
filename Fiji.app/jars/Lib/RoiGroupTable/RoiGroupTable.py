@@ -100,8 +100,8 @@ class Table(Panel):
 		# Button "Add Row" 
 		#JButton buttonAdd =  AddButton() 
 		buttonPanel.add( AddButton(self) ) 
-		buttonPanel.add( DeleteButton(self) ) 
 		buttonPanel.add( JLabel() ) # empty JLabel to fill the blank
+		buttonPanel.add( DeleteButton(self) ) 
 		buttonPanel.add( ImportButton(self) ) 
 		buttonPanel.add( ExportButton(self) )
 		 
