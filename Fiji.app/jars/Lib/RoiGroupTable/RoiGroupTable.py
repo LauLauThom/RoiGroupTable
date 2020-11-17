@@ -60,11 +60,22 @@ class ImportButton(JButton, ActionListener):
 	
 	def actionPerformed(self, event): 
 		"""Delete the last row"""
-		path = IJ.getFilePath("Select text file with group name mappings")
-		if not path: return 
 
+		# Generate a save dialog
+		dialog = JFileChooser( Prefs.get("roiGroup.importDir", "") )
+		dialog.setSelectedFile( File("roiGroups.txt") )
+		dialog.setFileFilter( FileNameExtensionFilter("Text file",["txt"]) )
+		output = dialog.showOpenDialog(self.groupTable) # could be None argument too
+
+		if output in [JFileChooser.CANCEL_OPTION, JFileChooser.ERROR_OPTION]: return
+		selectedFile = dialog.getSelectedFile()
+		directory    = selectedFile.getParent()
+		Prefs.set("roiGroup.importDir", directory)
+		if not selectedFile.isFile(): return 
+		filePath = selectedFile.getPath()
+		
 		# Read comma-separated group from file
-		with open(path, "r") as textFile:
+		with open(filePath, "r") as textFile:
 			stringGroup = textFile.readline().rstrip()
 
 		# Update table with content of file
