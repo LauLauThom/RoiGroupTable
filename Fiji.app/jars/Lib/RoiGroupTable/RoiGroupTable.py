@@ -83,10 +83,7 @@ class ExportButton(JButton, ActionListener):
 	
 	def actionPerformed(self, event): 
 		"""Delete the last row"""
-		'''
-		path = IJ.getFilePath("Select text file to save group name mappings")
-		if not path: return 
-		'''
+		
 		# Generate a save dialog
 		dialog = JFileChooser()
 		dialog.setSelectedFile( File("roiGroups.txt") )
