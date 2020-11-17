@@ -93,6 +93,9 @@ if __name__ in ['__builtin__', '__main__']:
     
     tableModel = TableModel()
     table = JTable(tableModel)
+    tableModel.setGroupColumn("A,B,C")
+    print tableModel.getGroupString()
+    
     tablePane = JScrollPane(table)
     table.setFillsViewportHeight(True)
 
