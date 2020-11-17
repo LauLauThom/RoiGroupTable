@@ -101,8 +101,11 @@ class Table(Panel):
 		#JButton buttonAdd =  AddButton() 
 		buttonPanel.add( AddButton(self) ) 
 		buttonPanel.add( DeleteButton(self) ) 
+		buttonPanel.add( JLabel() ) # empty JLabel to fill the blank
+		buttonPanel.add( ImportButton(self) ) 
+		buttonPanel.add( ExportButton(self) )
 		 
-		# Add button panel to main panel 
+		# Finally add button panel to main panel 
 		self.add(buttonPanel) 
 
 
