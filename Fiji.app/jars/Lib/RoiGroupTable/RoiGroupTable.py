@@ -5,8 +5,8 @@ from ij.gui import GenericDialog, Roi
 from RoiGroupTableModel import TableModel
  
 
-# Class defining action of button : Adding a row to table 
 class AddButton(JButton, ActionListener): 
+	"""Class defining action of button : Adding a row to table"""
 
 	def __init__(self, groupTable): 
 		super(AddButton, self).__init__("Add row")
@@ -27,9 +27,10 @@ class AddButton(JButton, ActionListener):
 		
  
 
-# Class defining action of button : Adding a row to table 
+
 class DeleteButton(JButton, ActionListener): 
-	 
+	"""Class defining action of button : Adding a row to table"""
+	
 	def __init__(self, groupTable):	 
 		super(DeleteButton, self).__init__("Delete last row")
 		self.addActionListener(self) 
