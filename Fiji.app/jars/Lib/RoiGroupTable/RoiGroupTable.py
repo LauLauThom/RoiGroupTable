@@ -1,6 +1,5 @@
 """
-TO DO:
-- Add persistence of last directory
+Define table panels, interactions and button actions 
 """
 from javax.swing             import JButton, JTable, JScrollPane, JPanel, JLabel, SpinnerNumberModel, JSpinner, JTextField, JFileChooser
 from javax.swing.filechooser import FileNameExtensionFilter
@@ -8,7 +7,7 @@ from java.awt       import GridLayout, Panel, Dimension
 from java.awt.event import ActionEvent, ActionListener 
 from java.io import File
 from ij.gui import GenericDialog, Roi 
-from ij import IJ
+from ij import IJ, Prefs
 from RoiGroupTableModel import TableModel 
 #from RoiGroupTable.RoiGroupTableModel import TableModel # for local tests 
  
@@ -85,14 +84,17 @@ class ExportButton(JButton, ActionListener):
 		"""Delete the last row"""
 		
 		# Generate a save dialog
-		dialog = JFileChooser()
+		dialog = JFileChooser( Prefs.get("roiGroup.exportDir", "") )
 		dialog.setSelectedFile( File("roiGroups.txt") )
 		dialog.setFileFilter( FileNameExtensionFilter("Text file",["txt"]) )
 		
 		output = dialog.showSaveDialog(self.groupTable) # could be argument None too
 		
 		if output in [JFileChooser.CANCEL_OPTION, JFileChooser.ERROR_OPTION]: return
-		filePath = dialog.getSelectedFile().getPath()
+		selectedFile = dialog.getSelectedFile()
+		directory = selectedFile.getParent()
+		Prefs.set("roiGroup.exportDir", directory)
+		filePath = selectedFile.getPath()
 		if not ("." in filePath): filePath += ".txt" # Add extension if missing
 
 		# Write the groupString to the file
