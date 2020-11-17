@@ -124,7 +124,7 @@ class Table(Panel):
 		 
 		if gd.wasOKed(): 
 			# Update ImageJ Roi group names mapping
-			stringGroup = ','.join( self.tableModel.getColumn(1) ) 
+			stringGroup = self.tableModel.getGroupString()
 			Roi.setGroupNames(stringGroup) 
 	
 	
