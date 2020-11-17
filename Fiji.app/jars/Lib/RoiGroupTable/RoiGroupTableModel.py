@@ -43,6 +43,19 @@ class TableModel(AbstractTableModel):
         self.columns[column][row] = value
         self.fireTableCellUpdated(row, column)
     
+    def getGroupString(self):
+        """Return the groups as a string of comma-separated values"""
+        return ",".join( self.columns[1] )
+
+    def setGroupColumn(self, groupString):
+        """Set groups from a string of comma-delimited value"""
+        groupList = groupString.split(",")
+        nGroup = len(groupList)
+        self.nRows = nGroup
+        self.columns[0] = range(1, nGroup+1)
+        self.columns[1] = groupList 
+        self.fireTableDataChanged()
+    
     def addRow(self, index, name):
         """Add row with 1-based index"""
         self.columns[0].append(index)
