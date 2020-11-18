@@ -128,7 +128,7 @@ class Table(Panel):
 		  
 		self.tableModel = TableModel() 
 		self.table = JTable(self.tableModel)  
-		self.table.setPreferredScrollableViewportSize( Dimension(500, 70) )  
+		self.table.setPreferredScrollableViewportSize( Dimension(500, 100) )  
 		self.table.setFillsViewportHeight(True)  
 		  
 		# Handle row selection  
@@ -190,6 +190,7 @@ class Table(Panel):
 		"""
 		gd = GenericDialog("Roi-group table")  
 		gd.addPanel(self) # Add current table instance to panel  
+		gd.addMessage("If you use this plugin, please cite: ***")
 		gd.showDialog()  
 		  
 		if gd.wasOKed():  
