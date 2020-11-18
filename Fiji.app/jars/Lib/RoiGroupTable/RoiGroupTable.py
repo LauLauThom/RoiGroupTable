@@ -190,7 +190,11 @@ class Table(Panel):
 		"""
 		gd = GenericDialog("Roi-group table")  
 		gd.addPanel(self) # Add current table instance to panel  
-		gd.addMessage("If you use this plugin, please cite: ***")
+		gd.addMessage("""If you use this plugin, please cite: 
+		
+		Laurent Thomas. (2020, November 18). 
+		LauLauThom/RoiGroupTable: ImageJ/Fiji RoiGroup Table (Version 1.0)
+		Zenodo. http://doi.org/10.5281/zenodo.4279049""")
 		gd.addHelp(r"https://github.com/LauLauThom/RoiGroupTable")
 		gd.showDialog()  
 		  
