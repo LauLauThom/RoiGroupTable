@@ -191,6 +191,7 @@ class Table(Panel):
 		gd = GenericDialog("Roi-group table")  
 		gd.addPanel(self) # Add current table instance to panel  
 		gd.addMessage("If you use this plugin, please cite: ***")
+		gd.addHelp(r"https://github.com/LauLauThom/RoiGroupTable")
 		gd.showDialog()  
 		  
 		if gd.wasOKed():  
