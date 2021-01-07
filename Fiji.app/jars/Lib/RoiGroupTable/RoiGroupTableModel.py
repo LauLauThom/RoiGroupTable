@@ -12,7 +12,7 @@ class TableModel(AbstractTableModel):
         super(TableModel, self).__init__()
         self.headers = ["Group", "Name"]
         groupNames   = Roi.getGroupNames() # groupNames can be None !
-        groupNames   = groupNames.split(",") if groupNames else [] # groupNames is a list then
+        groupNames   = groupNames.split(",") if groupNames else ["ExampleName-doubleClick to edit"] # groupNames is a list
         self.nRows   = len(groupNames)
         self.columns = [[],[]] # 2 columns
         self.columns[0] = range(1, len(groupNames)+1)
