@@ -11,7 +11,8 @@ class TableModel(AbstractTableModel):
     def __init__(self):
         super(TableModel, self).__init__()
         self.headers = ["Group", "Name"]
-        groupNames  = Roi.getGroupNames().split(",") # groupNames is a list then
+        groupNames   = Roi.getGroupNames() # groupNames can be None !
+        groupNames   = groupNames.split(",") if groupNames else [] # groupNames is a list then
         self.nRows   = len(groupNames)
         self.columns = [[],[]] # 2 columns
         self.columns[0] = range(1, len(groupNames)+1)
