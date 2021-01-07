@@ -1,14 +1,22 @@
 '''
 This custom table model is designed to support the data as columns
 With 2 columns: 1 for group numbers, the second for group names
+
+Requires ImageJ 1.53b minimum
 '''
 from javax.swing.table import AbstractTableModel
 from ij.gui   import Roi
-
+from ij       import IJ
 
 class TableModel(AbstractTableModel):
     
     def __init__(self):
+        
+        if IJ.getFullVersion()<"1.53b":
+           message = "ImageJ with at least version 1.53b required. Update with Help > Update ImageJ..." 
+           IJ.error(message)
+           raise Exception(message)
+        
         super(TableModel, self).__init__()
         self.headers = ["Group", "Name"]
         groupNames   = Roi.getGroupNames() # groupNames can be None !
