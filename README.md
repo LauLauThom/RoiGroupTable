@@ -2,6 +2,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4279049.svg)](https://doi.org/10.5281/zenodo.4279049)  
 
 The plugin is available by activating the `RoiGroupTable` update site in Fiji.  
+See how to [activate an update site](https://imagej.net/How_to_follow_a_3rd_party_update_site).  
 After restarting Fiji the plugin is listed at the bottom of the Plugin menu.    
 The plugin provides a table to interactively set the names associated to the Roi group integer indexes (easier than the ImageJ built-in solution).  
 
